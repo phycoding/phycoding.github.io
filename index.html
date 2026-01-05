@@ -1,92 +1,461 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name=viewport content="width=device-width, initial-scale=1">
-    <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - Advanced Analytics Demo</title>
     <style>
-        body { margin: 0; padding: 0; }
-        html { height: 100%; cursor: default; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: "Roboto", sans-serif; /* Default font */
-            width: 100%; height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .hero {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 60px 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             text-align: center;
-            display: table;
-            opacity: 1;
-            animation: fadein 3s forwards;
-        }
-        h2 {
-            font-weight: 300;
-            margin-bottom: 25px;
-        }
-        img {
-            width: 25%; /* Image width */
-            border: 0; /* For IE */
-            /* Aspect ratio of image, gives initial dimension to prevent text moving down once image is loaded */
-            /* When changing logo, change this also */
-            aspect-ratio: 125 / 50;
-        }
-        #main {
-            vertical-align: middle;
-            display: table-cell;
-        }
-        /* Progress bar */
-        #progress {
-            width: 45%; /* Bar width */
-            margin: 0 auto;
-            border-radius: 10px; /* Roundness */
-            background-color: #a8a8a8; /* Background colour */
-            padding: 7px 5px;
-            /* border: 5px solid #a8a8a8; Border */
-        }
-        #fill {
-            padding: 2px 0;
-            background-color: #00b98b; /* Fill colour */
-            width: 99%; /* Bar percentage, change text below also */
-            border-radius: 25px; /* Roundness */
-            animation: proanimate 2s;
-        }
-        #barpercent h3 {
-            color: white; /* Bar percentage text colour */
-            margin: 0; padding: 0;
-            opacity: 1;
-            animation: fadein 3s forwards;
+            margin-bottom: 30px;
+            animation: fadeInUp 0.8s ease;
         }
 
-        /* Fades in animation */
-        @keyframes fadein  {
-            from { opacity: 0; }
-        }
-        /* Animates bar on page load */
-        @keyframes proanimate {
-            from { width: 0%; }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        @media screen and (max-width:600px) {
-            img {
-                width: 60%;
-            }
-            h1 {
-                font-size: 1.3em;
-            }
-            h2 {
-                margin: 1.1em;
-                font-size: 1.1em;
-            }
-            #progress {
-                width: 99%; /* Bar width */
-            }
+        h1 {
+            font-size: 3em;
+            color: #333;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        .consent-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 5px solid #667eea;
+        }
+
+        .consent-box h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .consent-list {
+            text-align: left;
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+
+        .consent-list li {
+            margin: 10px 0;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            margin: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .data-display {
+            display: none;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .data-display.active {
+            display: block;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .data-item {
+            padding: 15px;
+            margin: 10px 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .data-label {
+            font-weight: bold;
+            color: #667eea;
+            display: inline-block;
+            width: 200px;
+        }
+
+        .data-value {
+            color: #333;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .status {
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
         }
     </style>
-    <title>Coming Soon</title>
 </head>
 <body>
-    <div id="main">
-        <img src="logo.png" alt="Logo Image">
-        <h1>Engineers Without Borders OUTR Student chapter</h1>
-        <h2>Our website is currently under construction. </h2>
-        <div id="progress"><div id="fill"><div id="barpercent"><h3>99%</h3></div></div></div>
+    <div class="container">
+        <div class="hero">
+            <h1>🚀 Welcome to Our Platform</h1>
+            <p class="subtitle">Experience the next generation of web analytics</p>
+
+            <div class="consent-box">
+                <h3>📍 Enhanced Experience with Location Services</h3>
+                <p style="color: #666; margin: 15px 0;">
+                    To provide you with personalized content and analytics, we'd like to collect:
+                </p>
+                <ul class="consent-list">
+                    <li>📌 Your precise geographic location (GPS coordinates)</li>
+                    <li>🌐 Network information (IP address, connection type)</li>
+                    <li>💻 Device details (browser, OS, screen resolution)</li>
+                    <li>🕐 Timezone and language preferences</li>
+                    <li>📊 Page interaction and performance metrics</li>
+                </ul>
+                <p style="color: #888; font-size: 0.9em; margin-top: 20px;">
+                    Your data is used solely for analytics and will never be sold. You can revoke consent anytime.
+                </p>
+            </div>
+
+            <div>
+                <button class="btn btn-primary" onclick="requestConsent()">
+                    ✓ I Accept - Show Me My Data
+                </button>
+                <button class="btn btn-secondary" onclick="declineConsent()">
+                    Decline
+                </button>
+            </div>
+
+            <div class="info-cards">
+                <div class="card">
+                    <h4>🔒 Privacy First</h4>
+                    <p>Your data is encrypted and stored securely. We comply with GDPR and privacy regulations.</p>
+                </div>
+                <div class="card">
+                    <h4>📊 Transparent Analytics</h4>
+                    <p>See exactly what data we collect. No hidden tracking or third-party sharing.</p>
+                </div>
+                <div class="card">
+                    <h4>⚡ Enhanced Performance</h4>
+                    <p>Location data helps us optimize content delivery and provide local experiences.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="data-display" id="dataDisplay">
+            <h2 style="color: #667eea; margin-bottom: 30px;">📊 Your Analytics Dashboard</h2>
+            <div id="statusMessages"></div>
+            <div id="analyticsData"></div>
+        </div>
     </div>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+
+    <script>
+        let analyticsData = {};
+
+        async function requestConsent() {
+            const display = document.getElementById('dataDisplay');
+            const statusDiv = document.getElementById('statusMessages');
+            const dataDiv = document.getElementById('analyticsData');
+            
+            display.classList.add('active');
+            statusDiv.innerHTML = '<div class="status success">✓ Consent granted! Collecting data...</div>';
+            dataDiv.innerHTML = '';
+
+            // Collect basic information
+            collectBasicInfo();
+            displayData('Basic Information', 'Collected');
+
+            // Request Geolocation
+            await requestGeolocation();
+
+            // Get IP and Network Info
+            await getIPInfo();
+
+            // Get Connection Info
+            getConnectionInfo();
+
+            // Final display
+            displayAllData();
+        }
+
+        function collectBasicInfo() {
+            analyticsData.timestamp = new Date().toISOString();
+            analyticsData.page = window.location.href;
+            analyticsData.referrer = document.referrer || 'Direct visit';
+            analyticsData.userAgent = navigator.userAgent;
+            analyticsData.language = navigator.language;
+            analyticsData.languages = navigator.languages.join(', ');
+            analyticsData.platform = navigator.platform;
+            analyticsData.cookieEnabled = navigator.cookieEnabled;
+            analyticsData.doNotTrack = navigator.doNotTrack;
+            analyticsData.screenResolution = `${screen.width}x${screen.height}`;
+            analyticsData.colorDepth = `${screen.colorDepth}-bit`;
+            analyticsData.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            analyticsData.timezoneOffset = new Date().getTimezoneOffset();
+            
+            // Browser detection
+            const ua = navigator.userAgent;
+            if (ua.includes('Firefox')) analyticsData.browser = 'Firefox';
+            else if (ua.includes('Chrome')) analyticsData.browser = 'Chrome';
+            else if (ua.includes('Safari')) analyticsData.browser = 'Safari';
+            else if (ua.includes('Edge')) analyticsData.browser = 'Edge';
+            else analyticsData.browser = 'Other';
+
+            // OS detection
+            if (ua.includes('Windows')) analyticsData.os = 'Windows';
+            else if (ua.includes('Mac')) analyticsData.os = 'MacOS';
+            else if (ua.includes('Linux')) analyticsData.os = 'Linux';
+            else if (ua.includes('Android')) analyticsData.os = 'Android';
+            else if (ua.includes('iOS')) analyticsData.os = 'iOS';
+            else analyticsData.os = 'Other';
+        }
+
+        async function requestGeolocation() {
+            return new Promise((resolve) => {
+                if ('geolocation' in navigator) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            analyticsData.latitude = position.coords.latitude;
+                            analyticsData.longitude = position.coords.longitude;
+                            analyticsData.accuracy = `${position.coords.accuracy} meters`;
+                            analyticsData.altitude = position.coords.altitude ? `${position.coords.altitude} meters` : 'Not available';
+                            analyticsData.heading = position.coords.heading || 'Not available';
+                            analyticsData.speed = position.coords.speed ? `${position.coords.speed} m/s` : 'Not available';
+                            displayData('GPS Location', 'Collected ✓');
+                            resolve();
+                        },
+                        (error) => {
+                            analyticsData.geolocationError = error.message;
+                            displayData('GPS Location', `Error: ${error.message}`);
+                            resolve();
+                        },
+                        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+                    );
+                } else {
+                    analyticsData.geolocationError = 'Geolocation not supported';
+                    displayData('GPS Location', 'Not supported by browser');
+                    resolve();
+                }
+            });
+        }
+
+        async function getIPInfo() {
+            try {
+                displayData('Network Information', 'Fetching...');
+                
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                
+                analyticsData.ip = data.ip;
+                analyticsData.ipVersion = data.version;
+                analyticsData.city = data.city;
+                analyticsData.region = data.region;
+                analyticsData.country = data.country_name;
+                analyticsData.countryCode = data.country_code;
+                analyticsData.continent = data.continent_code;
+                analyticsData.postal = data.postal;
+                analyticsData.latitude_ip = data.latitude;
+                analyticsData.longitude_ip = data.longitude;
+                analyticsData.isp = data.org;
+                analyticsData.asn = data.asn;
+                analyticsData.timezone_ip = data.timezone;
+                
+                displayData('Network Information', 'Collected ✓');
+            } catch (error) {
+                analyticsData.ipError = error.message;
+                displayData('Network Information', 'Error fetching IP data');
+            }
+        }
+
+        function getConnectionInfo() {
+            if ('connection' in navigator || 'mozConnection' in navigator || 'webkitConnection' in navigator) {
+                const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+                analyticsData.connectionType = conn.effectiveType;
+                analyticsData.downlink = `${conn.downlink} Mbps`;
+                analyticsData.rtt = `${conn.rtt} ms`;
+                analyticsData.saveData = conn.saveData;
+                displayData('Connection Info', 'Collected ✓');
+            } else {
+                displayData('Connection Info', 'Not available in this browser');
+            }
+        }
+
+        function displayData(label, status) {
+            const statusDiv = document.getElementById('statusMessages');
+            const loadingHtml = status.includes('...') ? '<span class="loading"></span>' : '';
+            statusDiv.innerHTML += `<div class="data-item">
+                <span class="data-label">${label}:</span>
+                <span class="data-value">${status}</span>
+                ${loadingHtml}
+            </div>`;
+        }
+
+        function displayAllData() {
+            const dataDiv = document.getElementById('analyticsData');
+            let html = '<h3 style="color: #667eea; margin-top: 30px;">Complete Data Collection:</h3>';
+            
+            for (const [key, value] of Object.entries(analyticsData)) {
+                if (!key.includes('Error') || value) {
+                    html += `<div class="data-item">
+                        <span class="data-label">${formatLabel(key)}:</span>
+                        <span class="data-value">${value}</span>
+                    </div>`;
+                }
+            }
+            
+            html += `<div style="margin-top: 30px; padding: 20px; background: #f0f0f0; border-radius: 10px;">
+                <p style="color: #666; margin-bottom: 10px;">
+                    <strong>📤 Data Collection Complete!</strong>
+                </p>
+                <p style="color: #888; font-size: 0.9em;">
+                    In a production environment, this data would be sent to your analytics backend.
+                    You can integrate with services like Google Analytics, Mixpanel, or your own server.
+                </p>
+            </div>`;
+            
+            dataDiv.innerHTML = html;
+            
+            // Log to console for debugging
+            console.log('Analytics Data Collected:', analyticsData);
+        }
+
+        function formatLabel(key) {
+            return key
+                .replace(/([A-Z])/g, ' $1')
+                .replace(/^./, str => str.toUpperCase())
+                .replace(/_/g, ' ');
+        }
+
+        function declineConsent() {
+            alert('You have declined data collection. You can still use the site with basic functionality.');
+            console.log('User declined consent');
+        }
+
+        // Automatically collect non-sensitive data
+        collectBasicInfo();
+    </script>
 </body>
 </html>
