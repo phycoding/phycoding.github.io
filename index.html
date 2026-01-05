@@ -3,7 +3,19 @@
 <head>
     <meta charset="utf-8">
     <meta name=viewport content="width=device-width, initial-scale=1">
+    <!-- Redirect to new site after 3 seconds -->
+    <meta http-equiv="refresh" content="3;url=https://www.example.com">
     <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <script type="text/javascript">
+        // JavaScript redirect as a fallback and for better control
+        // Replace 'https://www.example.com' with your actual target URL
+        var redirectUrl = 'https://www.example.com';
+        var redirectDelay = 3000; // 3 seconds in milliseconds
+        
+        setTimeout(function() {
+            window.location.href = redirectUrl;
+        }, redirectDelay);
+    </script>
     <style>
         body { margin: 0; padding: 0; }
         html { height: 100%; cursor: default; }
@@ -42,7 +54,7 @@
         #fill {
             padding: 2px 0;
             background-color: #00b98b; /* Fill colour */
-            width: 99%; /* Bar percentage, change text below also */
+            width: 100%; /* Bar percentage, changed to 100% for redirect */
             border-radius: 25px; /* Roundness */
             animation: proanimate 2s;
         }
@@ -84,9 +96,26 @@
     <div id="main">
         <img src="logo.png" alt="Logo Image">
         <h1>Engineers Without Borders OUTR Student chapter</h1>
-        <h2>Our website is currently under construction. </h2>
-        <div id="progress"><div id="fill"><div id="barpercent"><h3>99%</h3></div></div></div>
+        <h2>We're redirecting you to our new website...</h2>
+        <p style="margin-top: 20px; font-size: 0.9em; color: #666;">
+            You will be automatically redirected in <span id="countdown">3</span> seconds.<br>
+            If you are not redirected, <a href="https://www.example.com" style="color: #00b98b;">click here</a>.
+        </p>
+        <div id="progress"><div id="fill"><div id="barpercent"><h3>100%</h3></div></div></div>
     </div>
+    <script>
+        // Countdown timer
+        var seconds = 3;
+        var countdownElement = document.getElementById('countdown');
+        var countdownInterval = setInterval(function() {
+            seconds--;
+            if (seconds > 0) {
+                countdownElement.textContent = seconds;
+            } else {
+                clearInterval(countdownInterval);
+            }
+        }, 1000);
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
 </body>
 </html>
